@@ -1,0 +1,10 @@
+module.exports = {
+    trailingComma: 'es5',
+    tabWidth: 4,
+    vueIndentScriptAndStyle: true,
+    singleQuote: true,
+    endOfLine: 'lf',
+    htmlWhitespaceSensitivity: 'ignore',
+    printWidth: 100,
+    arrowParens: 'always',
+};

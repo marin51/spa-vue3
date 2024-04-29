@@ -1,0 +1,24 @@
+{
+    "name": "vite-mfe",
+    "private": true,
+    "type": "module",
+    "version": "0.0.0",
+    "scripts": {
+        "build": "vue-tsc && vite build",
+        "build-watch": "vue-tsc && vite build --minify false --watch --config ./vite.config.js",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "single-spa-vue": "3.0.0",
+        "vue": "3.4.21",
+        "vue-i18n": "9.11.1"
+    },
+    "devDependencies": {
+        "@types/node": "20.12.7",
+        "@vitejs/plugin-vue": "5.0.4",
+        "prettier": "3.2.5",
+        "typescript": "5.4.4",
+        "vite": "5.2.8",
+        "vue-tsc": "2.0.11"
+    }
+}
