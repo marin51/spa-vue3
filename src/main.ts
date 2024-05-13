@@ -4,6 +4,11 @@ import './style.css';
 
 import App from './App.vue';
 import { i18n } from './ui/i18n/';
+import { UserServiceFactoty } from './secondary/user/UserServiceFactory';
+import { CarServiceFactoty } from './secondary/car/CarServiceFactory';
+
+const userService = UserServiceFactoty.getUserService();
+const carService = CarServiceFactoty.getCarService();
 
 const vueLifecycles = singleSpaVue({
     createApp,
@@ -14,6 +19,8 @@ const vueLifecycles = singleSpaVue({
     },
     handleInstance(app) {
         app.use(i18n);
+        app.provide('userService', userService);
+        app.provide('carService', carService);
     },
 });
 

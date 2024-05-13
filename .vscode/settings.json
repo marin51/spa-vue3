@@ -1,0 +1,7 @@
+{
+    "prettier.configPath": "",
+    "prettier.documentSelectors": [
+        "*.{ts,js}"
+    ],
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+}

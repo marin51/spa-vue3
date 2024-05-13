@@ -8,6 +8,7 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "forceConsistentCasingInFileNames": true,
+        "composite": true,
 
         /* Bundler mode */
         "moduleResolution": "node",
@@ -23,8 +24,11 @@
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": false,
         "baseUrl": ".",
-        "sourceMap": true
+        "sourceMap": true,
+        "paths": {
+            "@/*": ["src/*"]
+        }
     },
     "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "vite.config.ts"],
-    "exclude": ["node_modules"],
+    "exclude": ["node_modules"]
 }
