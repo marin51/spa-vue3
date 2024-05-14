@@ -11,6 +11,4 @@ export interface CarRepository {
     deleteCar(carId: CarId): Promise<void>;
 
     getCurrentCar(): Car;
-
-    updateCurrentCarId(): Promise<Car>;
 }

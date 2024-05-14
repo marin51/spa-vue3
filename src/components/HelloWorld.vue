@@ -1,20 +1,19 @@
 <script setup lang="ts">
-    import { CarView } from '@/primary/car/CarView';
     import { CarService } from '@/primary/car/use-case';
     import { UserService } from '@/primary/user/use-cases';
-    import { ref, inject, onMounted } from 'vue';
+    import { carStore } from '@/secondary/car/resources/CarStore';
+    import { ref, inject, onMounted, computed } from 'vue';
 
     const userService = inject<UserService>('userService');
     const carService = inject<CarService>('carService');
 
     const loading = ref<boolean>(true);
     const username = ref<string>('');
-    const cars = ref<CarView[]>([]);
+    const cars = computed(() => carStore.getters.getCars());
 
     onMounted(async () => {
         const user = await userService?.getCurrentUser();
-        const apicars = await carService?.getCars();
-        cars.value = apicars || [];
+        await carService?.getCars();
         username.value = user?.name || '';
         loading.value = false;
     });
@@ -23,20 +22,17 @@
 </script>
 
 <template>
-    <div v-if="!loading">
-        <h1>Hello {{ username }}</h1>
-        <h2>These are your cars</h2>
-        <div v-for="car in cars" :key="car.id">
-            <h2>{{ car.make }}</h2>
-            <div v-if="car.serviceActions.length">
-                <h4>repair list:</h4>
-                <p v-for="serviceAction in car.serviceActions">
-                    {{ serviceAction.repair }}
-                </p>
-            </div>
-            <p v-else>There are no reported service actions</p>
+    <h1>Hello {{ username }}</h1>
+    <h2>These are your cars</h2>
+    <div v-for="car in cars" :key="car.id">
+        <h2>{{ car.make }}</h2>
+        <div v-if="car.serviceActions.length">
+            <h4>repair list:</h4>
+            <p v-for="serviceAction in car.serviceActions">
+                {{ serviceAction.repair }}
+            </p>
         </div>
-        <h3>{{ msg }}</h3>
+        <p v-else>There are no reported service actions</p>
     </div>
 </template>
 
