@@ -1,4 +1,4 @@
-import { CarService } from '@/primary/car/use-case';
+import { CarService } from '@/primary/car/CarService';
 import { UserResource } from '@/secondary/user/resources/UserResource';
 import { CarResource } from './resources/CarResource';
 

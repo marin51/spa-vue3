@@ -1,4 +1,4 @@
-import { UserService } from '@/primary/user/use-cases';
+import { UserService } from '@/primary/user/UserService';
 import { UserResource } from './resources/UserResource';
 
 export class UserServiceFactoty {

@@ -1,6 +1,6 @@
 import { UserRepository } from '@/domain/user/repository/UserRepository';
-import { GetUserUseCase } from './GetUserUseCase';
-import { CreateUserUseCase } from './CreateUserUseCase';
+import { GetUserUseCase } from '@/primary/user/use-cases/GetUserUseCase';
+import { CreateUserUseCase } from '@/primary/user/use-cases/CreateUserUseCase';
 import { UserToSave } from '@/domain/user/types';
 
 export class UserService {

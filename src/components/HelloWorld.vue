@@ -1,7 +1,8 @@
 <script setup lang="ts">
-    import { CarService } from '@/primary/car/use-case';
-    import { UserService } from '@/primary/user/use-cases';
+    import { CarService } from '@/primary/car/CarService';
+    import { UserService } from '@/primary/user/UserService';
     import { carStore } from '@/secondary/car/resources/CarStore';
+    import { Timestamp } from 'firebase/firestore';
     import { ref, inject, onMounted, computed } from 'vue';
 
     const userService = inject<UserService>('userService');
@@ -16,6 +17,14 @@
         await carService?.getCars();
         username.value = user?.name || '';
         loading.value = false;
+
+        setTimeout(() => {
+            carService?.createCar({
+                make: 'Opel Astra H ' + Date.now(),
+                serviceActions: [],
+                updatedAt: Timestamp.fromDate(new Date()),
+            });
+        }, 3000);
     });
 
     defineProps<{ msg: string }>();

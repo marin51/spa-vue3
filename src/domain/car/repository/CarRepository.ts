@@ -6,9 +6,7 @@ export interface CarRepository {
 
     addCar(form: CarToSave): Promise<Car>;
 
-    updateCar(form: CarToSave): Promise<Car>;
+    updateCar(form: CarToSave, carId: string): Promise<Car>;
 
     deleteCar(carId: CarId): Promise<void>;
-
-    getCurrentCar(): Car;
 }

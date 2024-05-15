@@ -7,12 +7,14 @@ import {
     WithFieldValue,
     getFirestore,
     where,
+    doc,
+    setDoc,
+    updateDoc,
+    deleteDoc,
 } from 'firebase/firestore';
 
-type PostResponse = {
-    data: {
-        id: string;
-    };
+export type PostResponse = {
+    docId: string;
 };
 
 export class ClientService {
@@ -69,6 +71,8 @@ export class ClientService {
         data: DocumentData
     ): Promise<PostResponse> {
         try {
+            // TODO: Improve this
+            const userId = localStorage.getItem('user_id') || 'marinsk1';
             // Clean data using removeUndefinedProperties method
             const cleanedData = this.removeUndefinedProperties(data);
 
@@ -77,16 +81,51 @@ export class ClientService {
                 cleanedData as WithFieldValue<DocumentData>;
 
             // Add the cleaned data to the Firestore collection
-            const docRef = await addDoc(collection(this.db, url), firestoreData);
-            console.log('Document written with ID:', docRef.id);
+            const record = await addDoc(collection(this.db, url), firestoreData);
+            const docRef = doc(this.db, url, record.id);
+            await setDoc(docRef, { id: record.id, uid: userId }, { merge: true });
+
             return {
-                data: {
-                    id: docRef.id,
-                },
+                docId: record.id,
             };
         } catch (error) {
             console.error('Error adding document:', error);
             throw new Error('Failed to add document');
+        }
+    }
+
+    public static async update<DocumentData extends object>(
+        url: string,
+        data: DocumentData,
+        docId: string
+    ): Promise<PostResponse> {
+        try {
+            const cleanedData = this.removeUndefinedProperties(data);
+
+            // Ensure the cleanedData matches the expected type for Firestore
+            const firestoreData: WithFieldValue<DocumentData> =
+                cleanedData as WithFieldValue<DocumentData>;
+
+            // Add the cleaned data to the Firestore collection
+            const docRef = doc(this.db, url, docId);
+            await updateDoc(docRef, firestoreData);
+
+            return {
+                docId: docRef.id,
+            };
+        } catch (error) {
+            console.error('Error updating document:', error);
+            throw new Error('Failed to update document');
+        }
+    }
+
+    public static async delete(url: string, docId: string) {
+        try {
+            await deleteDoc(doc(this.db, url, docId));
+        } catch (error) {
+            console.error('Error deleting document:', error);
+
+            throw new Error('Failed to delete document.');
         }
     }
 }
