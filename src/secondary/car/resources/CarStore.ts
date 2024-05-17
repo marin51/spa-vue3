@@ -7,7 +7,7 @@ export const carStore = {
     }),
     getters: {
         getCars() {
-            return carStore.state.cars;
+            return carStore.state.cars as CarProperties[];
         },
     },
     mutations: {

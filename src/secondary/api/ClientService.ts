@@ -20,6 +20,20 @@ export type PostResponse = {
 export class ClientService {
     private static readonly app = FirebaseService.getInstance();
     private static readonly db = getFirestore(this.app);
+    private static readonly userId = this.getUserId();
+
+    private static getUserId() {
+        // TODO: Improve this
+        const localUserData = localStorage.getItem('user');
+        let userId = '';
+
+        if (localUserData) {
+            userId = JSON.parse(localUserData).id;
+            return userId;
+        }
+        console.error('Not such a user');
+        throw Error('Not such a user');
+    }
 
     // Static method to remove undefined properties from data
     private static removeUndefinedProperties<T extends object>(data: T): T {
@@ -42,14 +56,7 @@ export class ClientService {
 
     public static async get<ResponseType>(url: string): Promise<ResponseType[]> {
         try {
-            // TODO: Improve this
-            const userId = localStorage.getItem('user_id') || 'marinsk1';
-
-            if (!userId) {
-                console.error('Not such a user');
-            }
-
-            const q = query(collection(this.db, url), where('uid', '==', userId));
+            const q = query(collection(this.db, url), where('uid', '==', this.userId));
             const querySnapshot = await getDocs(q);
             const dataList: ResponseType[] = [];
 
@@ -71,8 +78,6 @@ export class ClientService {
         data: DocumentData
     ): Promise<PostResponse> {
         try {
-            // TODO: Improve this
-            const userId = localStorage.getItem('user_id') || 'marinsk1';
             // Clean data using removeUndefinedProperties method
             const cleanedData = this.removeUndefinedProperties(data);
 
@@ -83,7 +88,7 @@ export class ClientService {
             // Add the cleaned data to the Firestore collection
             const record = await addDoc(collection(this.db, url), firestoreData);
             const docRef = doc(this.db, url, record.id);
-            await setDoc(docRef, { id: record.id, uid: userId }, { merge: true });
+            await setDoc(docRef, { id: record.id, uid: this.userId }, { merge: true });
 
             return {
                 docId: record.id,

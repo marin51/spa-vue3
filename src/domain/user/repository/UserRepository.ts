@@ -4,4 +4,5 @@ import { UserToSave } from '@/domain/user/types';
 export interface UserRepository {
     getCurrentUser(): Promise<User>;
     createUser(form: UserToSave): Promise<User>;
+    updateUser(form: UserToSave, userId: string): Promise<User>;
 }
